@@ -509,7 +509,7 @@ void smp_proc_pair_fail(tSMP_CB* p_cb, tSMP_INT_DATA* p_data) {
                       __func__, p_cb->rcvd_cmd_len);
     p_cb->status = SMP_INVALID_PARAMETERS;
   } else {
-    p_cb->status = p_data->status;
+    p_cb->status = SMP_CONFIRM_VALUE_ERR;
   }
 
   /* Cancel pending auth complete timer if set */

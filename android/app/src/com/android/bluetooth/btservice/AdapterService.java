@@ -1043,7 +1043,15 @@ public class AdapterService extends Service {
     private boolean isSupported(ParcelUuid[] localDeviceUuids, ParcelUuid[] remoteDeviceUuids,
             int profile, BluetoothDevice device) {
         if (remoteDeviceUuids == null || remoteDeviceUuids.length == 0) {
-            Log.e(TAG, "isSupported: Remote Device Uuids Empty");
+            Log.e(TAG, "isProfileSupported(device=" + device + ", profile="
+                    + BluetoothProfile.getProfileName(profile) + "): remote device Uuids Empty");
+        }
+
+        if (VERBOSE) {
+            Log.v(TAG, "isProfileSupported(device=" + device + ", profile="
+                    + BluetoothProfile.getProfileName(profile) + "): local_uuids="
+                    + Arrays.toString(localDeviceUuids) + ", remote_uuids="
+                    + Arrays.toString(remoteDeviceUuids));
         }
 
         if (profile == BluetoothProfile.HEADSET) {
@@ -1085,7 +1093,8 @@ public class AdapterService extends Service {
             return mPbapService.getConnectionState(device) == BluetoothProfile.STATE_CONNECTED;
         }
         if (profile == BluetoothProfile.MAP_CLIENT) {
-            return true;
+            return Utils.arrayContains(localDeviceUuids, BluetoothUuid.MNS)
+                    && Utils.arrayContains(remoteDeviceUuids, BluetoothUuid.MAS);
         }
         if (profile == BluetoothProfile.PBAP_CLIENT) {
             return Utils.arrayContains(localDeviceUuids, BluetoothUuid.PBAP_PCE)
